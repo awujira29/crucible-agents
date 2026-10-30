@@ -58,4 +58,16 @@ class Notebook:
         raise Contradiction(
     f"{card} in {place}: already {cur_val}, but told {value}"
 )       
-                  
+
+    def record_own_hand(self, seat, hand):
+        """Fill in our own column: ✓ for cards in our hand, ✗ for all others."""
+
+        for card in hand:
+            if card not in self.cards:
+                raise ValueError(f"Card {card} is not in the list of cards")
+
+        for card in self.cards:
+            if card in hand:
+                self.set(card, seat, True)
+            else:
+                self.set(card, seat, False)
