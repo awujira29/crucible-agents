@@ -71,3 +71,42 @@ class Notebook:
                 self.set(card, seat, True)
             else:
                 self.set(card, seat, False)
+
+    def apply_exactly(self, group, n):
+        """Enforce: exactly n of the cells in `group` are ✓.
+
+        group: a list of (card, place) pairs.
+        Returns True if anything changed.
+        Raises Contradiction if the group can't have exactly n ✓.
+        """
+        # 1. Count, before changing anything.
+        yes_count = 0
+        unknown = []
+        for card, place in group:
+            value = self.get(card, place)
+            if value is True:
+                yes_count += 1
+            elif value is None:
+                unknown.append((card, place))
+
+        # 2. Contradictions.
+        if yes_count > n:
+            raise Contradiction(
+                f"{group[0]}...: {yes_count} ✓ but only {n} allowed")
+        if yes_count + len(unknown) < n:
+            raise Contradiction(
+                f"{group[0]}...: needs {n} ✓ but only "
+                f"{yes_count + len(unknown)} possible")
+
+        # 3. Deductions.
+        changed = False
+        if yes_count == n:
+            for card, place in unknown:
+                if self.set(card, place, False):
+                    changed = True
+        elif yes_count + len(unknown) == n:
+            for card, place in unknown:
+                if self.set(card, place, True):
+                    changed = True
+
+        return changed
