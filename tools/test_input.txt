@@ -1,0 +1,3 @@
+{"type":"init","game":"connect-four","seat":"seat-1"}
+{"type":"decision","decision":{"requestId":"turn:1","seat":"seat-1","kind":"disc-dropped"},"history":[{"seq":0,"atMs":12,"event":{"type":"game-started","red":"seat-1","yellow":"seat-2","you":1,"columns":7,"rows":6}}],"deadlineMs":15000}
+{"type":"decision","decision":{"requestId":"turn:3","seat":"seat-1","kind":"disc-dropped"},"history":[{"seq":0,"atMs":12,"event":{"type":"game-started","red":"seat-1","yellow":"seat-2","you":1,"columns":7,"rows":6}},{"seq":1,"atMs":100,"event":{"type":"disc-dropped","seat":"seat-1","column":3,"row":5,"player":1}},{"seq":2,"atMs":200,"event":{"type":"disc-dropped","seat":"seat-2","column":3,"row":4,"player":2}}],"deadlineMs":15000}
