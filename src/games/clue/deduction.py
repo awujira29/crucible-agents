@@ -9,13 +9,14 @@ Places are the player seats plus the envelope.
 """
 
 ENVELOPE = "envelope"
+CATEGORIES = ("suspect:", "weapon:", "room:")
 
 
 class Contradiction(Exception):
     """Raised when the facts can't all be true (a bug, or history read wrongly)."""
 
 class Notebook:
-    def __init__(self, cards, seats):
+    def __init__(self, cards, seats, hand_sizes=None):
         """Create a notebook where every cell is unknown.
 
         cards: list of card IDs, like ["suspect:plum", "weapon:rope", ...]
@@ -23,7 +24,8 @@ class Notebook:
         """
         self.cards = list(cards)
         self.places = list(seats) + [ENVELOPE]
-
+        self.hand_sizes = {} if not hand_sizes else dict(hand_sizes)
+        self.seats = list(seats)
         # TODO: create self.cells: a dictionary with one key for every
         # (card, place) pair, where every value starts as None.
         self.cells = {}
@@ -143,3 +145,25 @@ class Notebook:
                 res.append((card, ENVELOPE))
 
         return res
+
+    def apply_rules(self):
+        changed = False
+        for card in self.cards:
+            if self.apply_exactly(self.row(card), 1):
+                changed = True
+        for prefix in CATEGORIES:
+            if self.apply_exactly(self.envelope_category(prefix), 1):
+                changed = True
+        for seat in self.seats:
+            if seat not in self.hand_sizes:
+                continue
+            n = self.hand_sizes[seat]
+           
+            if self.apply_exactly(self.column(seat), n):
+                changed = True
+
+
+        
+
+        return changed
+
