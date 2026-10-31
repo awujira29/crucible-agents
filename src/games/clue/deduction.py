@@ -110,3 +110,36 @@ class Notebook:
                     changed = True
 
         return changed
+
+    def row(self, card):
+        """Return the cells for one card in every place: [(card, place), ...].
+
+        Rule 1 uses this: each card is in exactly one place.
+        """
+        res = []
+
+        for place in self.places:
+            res.append((card, place))
+
+        return res
+
+    def column(self, seat):
+        """Return the cells for every card in one seat: [(card, seat), ...].
+
+        Rule 3 uses this: each player holds exactly their hand size.
+        """
+        res = []
+
+        for card in self.cards:
+            res.append((card,seat))
+
+        return res
+
+    def envelope_category(self, prefix):
+        res = []
+
+        for card in self.cards:
+            if card.startswith(prefix):
+                res.append((card, ENVELOPE))
+
+        return res
