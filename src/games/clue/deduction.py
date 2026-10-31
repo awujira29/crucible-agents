@@ -26,6 +26,7 @@ class Notebook:
         self.places = list(seats) + [ENVELOPE]
         self.hand_sizes = {} if not hand_sizes else dict(hand_sizes)
         self.seats = list(seats)
+        self.constraints = []
         # TODO: create self.cells: a dictionary with one key for every
         # (card, place) pair, where every value starts as None.
         self.cells = {}
@@ -164,7 +165,15 @@ class Notebook:
 
 
         
-
+    
         return changed
+
+    def add_constraint(self, seat, cards):
+        for card in cards:
+            if not card in self.cards:
+                raise ValueError(f"add_constraint: unknown card {card!r}")
+        if seat not in self.seats:
+            raise ValueError(f"add_constraint: unknown seat {seat!r}")
+        self.constraints.append((seat, set(cards)))
 
     
